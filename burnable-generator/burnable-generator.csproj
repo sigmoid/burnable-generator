@@ -23,8 +23,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Clipper2" Version="1.5.4" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <PackageReference Include="OpenCvSharp" Version="2.4.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\peridot\peridot.csproj" />

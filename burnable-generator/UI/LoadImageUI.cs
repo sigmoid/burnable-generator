@@ -28,9 +28,9 @@ public class LoadImageUI
 
     public void Create()
     {
-        VerticalLayoutGroup vLayout = new VerticalLayoutGroup(new Microsoft.Xna.Framework.Rectangle(10, 10, 900, 100), 5);
+        VerticalLayoutGroup vLayout = new VerticalLayoutGroup(new Microsoft.Xna.Framework.Rectangle(25, 25, 900, 100), 5);
         HorizontalLayoutGroup hLayout = new HorizontalLayoutGroup(new Microsoft.Xna.Framework.Rectangle(10, 10, 900, 50), 5);
-        TextInput filePathInput = new TextInput(new Microsoft.Xna.Framework.Rectangle(0, 0, 700, 30), _font, "Enter image file path...");
+        TextInput filePathInput = new TextInput(new Microsoft.Xna.Framework.Rectangle(0, 0, 700, 60), _font, "Enter image file path...");
 
         filePathInput.OnTextChanged += (text) =>
         {
@@ -43,7 +43,7 @@ public class LoadImageUI
             LoadImage();
         };
 
-        Button loadButton = new Button(new Microsoft.Xna.Framework.Rectangle(0, 0, 80, 30), "Load",  _font, Color.Gray, Color.LightGray, Color.White, () =>
+        Button loadButton = new Button(new Microsoft.Xna.Framework.Rectangle(0, 0, 100, 60), "Load",  _font, Color.Gray, Color.LightGray, Color.White, () =>
         {
             string filePath = _imagePath;
             LoadImage();
