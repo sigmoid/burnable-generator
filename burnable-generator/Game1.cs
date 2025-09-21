@@ -59,47 +59,7 @@ public class Game1 : Core
         _font = Content.Load<SpriteFont>("fonts/JosefinSans");
         _burnDecayEffect = Content.Load<Effect>("shaders/burn-decay");
 
-        _loadImageUI = new LoadImageUI(_font, (loadedTexture) =>
-        {
-            LoadImage(loadedTexture);
-        });
-        _loadImageUI.Create();
-
-        Core.UISystem.AddElement(_loadImageUI.GetUIElement());
-
-        _createBurnableUI = new CreateBurnableUI(_font, () =>
-        {
-            GenerateBurnableData();
-        });
-        _createBurnableUI.Create();
-        Core.UISystem.AddElement(_createBurnableUI.GetUIElement());
-
-        _previewSlider = new Slider(new Rectangle(Core.GraphicsDevice.Viewport.Width / 2 - 300, Core.GraphicsDevice.Viewport.Height - 50, 600, 30), 0, 1, 0.0f);
-        Core.UISystem.AddElement(_previewSlider);
-
-        _meshPropertiesUI = new MeshPropertiesUI(_font);
-        _meshPropertiesUI.Create();
-        Core.UISystem.AddElement(_meshPropertiesUI.GetUIElement());
-
-        _saveDataUI = new SaveDataUI(_font, () =>
-        {
-            var filePath = _saveDataUI.GetFilePath();
-            var meshData = _burnableData;
-
-            var serializedString = JsonSerializer.Serialize(meshData);
-            // if path does not exist, create it
-            var directory = System.IO.Path.GetDirectoryName(filePath);
-            if (!System.IO.Directory.Exists(directory))
-            {
-                System.IO.Directory.CreateDirectory(directory);
-            }
-            System.IO.File.WriteAllText(filePath, serializedString);
-
-            _saveDataUI.SetSuccessMessage("Data saved to " + filePath);
-        });
-        _saveDataUI.Create();
-
-        Core.UISystem.AddElement(_saveDataUI.GetUIElement());
+        CreateUI();
 
         base.LoadContent();
     }
@@ -176,7 +136,7 @@ public class Game1 : Core
     private void DrawMesh(Mesh mesh)
     {
         _spriteBatch.Begin();
-        for(int i = 0; i < mesh.Vertices.Count; i += 2)
+        for (int i = 0; i < mesh.Vertices.Count; i += 2)
         {
             if (i + 1 < mesh.Vertices.Count)
             {
@@ -186,8 +146,8 @@ public class Game1 : Core
                 Vector2 p1 = new Vector2(v1.X, v1.Y);
                 Vector2 p2 = new Vector2(v2.X, v2.Y);
 
-                DrawLine(p1 * new Vector2(_loadedImageSprite.Width, _loadedImageSprite.Height) + new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2) - new Vector2(_loadedImageSprite.Width/2, _loadedImageSprite.Height/2),
-                p2 * new Vector2(_loadedImageSprite.Width, _loadedImageSprite.Height) + new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2) - new Vector2(_loadedImageSprite.Width/2, _loadedImageSprite.Height/2),
+                DrawLine(p1 * new Vector2(_loadedImageSprite.Width, _loadedImageSprite.Height) + new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2) - new Vector2(_loadedImageSprite.Width / 2, _loadedImageSprite.Height / 2),
+                p2 * new Vector2(_loadedImageSprite.Width, _loadedImageSprite.Height) + new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2) - new Vector2(_loadedImageSprite.Width / 2, _loadedImageSprite.Height / 2),
                 Color.OrangeRed, 5);
             }
         }
@@ -204,4 +164,70 @@ public class Game1 : Core
 
         _spriteBatch.Draw(_pixel, start, null, color, angle, origin, scale, SpriteEffects.None, 0);
     }
+
+    private void CreateUI()
+    {
+        CreateLoadImageUI();
+        CreateBurnableUI();
+        CreatePreviewSlider();
+        CreateMeshPropertiesUI();
+        CreateSaveDataUI();
+    }
+
+    private void CreateLoadImageUI()
+    {
+        _loadImageUI = new LoadImageUI(_font, (loadedTexture) =>
+        {
+            LoadImage(loadedTexture);
+        });
+        _loadImageUI.Create();
+        Core.UISystem.AddElement(_loadImageUI.GetUIElement());
+    }
+
+    private void CreateBurnableUI()
+    {
+        _createBurnableUI = new CreateBurnableUI(_font, () =>
+        {
+            GenerateBurnableData();
+        });
+        _createBurnableUI.Create();
+        Core.UISystem.AddElement(_createBurnableUI.GetUIElement());
+    }
+
+    private void CreatePreviewSlider()
+    {
+        _previewSlider = new Slider(new Rectangle(Core.GraphicsDevice.Viewport.Width / 2 - 300, Core.GraphicsDevice.Viewport.Height - 50, 600, 30), 0, 1, 0.0f);
+        Core.UISystem.AddElement(_previewSlider);
+    }
+
+    private void CreateMeshPropertiesUI()
+    {
+        _meshPropertiesUI = new MeshPropertiesUI(_font);
+        _meshPropertiesUI.Create();
+        Core.UISystem.AddElement(_meshPropertiesUI.GetUIElement());
+    }
+
+    private void CreateSaveDataUI()
+    {
+        _saveDataUI = new SaveDataUI(_font, () =>
+        {
+            var filePath = _saveDataUI.GetFilePath();
+            var meshData = _burnableData;
+
+            var serializedString = JsonSerializer.Serialize(meshData);
+            // if path does not exist, create it
+            var directory = System.IO.Path.GetDirectoryName(filePath);
+            if (!System.IO.Directory.Exists(directory))
+            {
+                System.IO.Directory.CreateDirectory(directory);
+            }
+            System.IO.File.WriteAllText(filePath, serializedString);
+
+            _saveDataUI.SetSuccessMessage("Data saved to " + filePath);
+        });
+        _saveDataUI.Create();
+
+        Core.UISystem.AddElement(_saveDataUI.GetUIElement());
+    }
+
 }
